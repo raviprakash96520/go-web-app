@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: go-web-app
+  labels:
+    app: go-web-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: go-web-app
+  template:
+    metadata:
+      labels:
+        app: nginx  # this labels use as selector in service.yaml
+    spec:
+      containers:
+      - name: go-web-app
+        image: ravi6198/go-web-app:v1
+        ports:
+        - containerPort: 8080
