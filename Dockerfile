@@ -1,23 +1,27 @@
-FROM golang:1.22.5 as base
+# Build stage
+FROM golang:1.22.5 AS builder
 
 WORKDIR /app
-# dependencies to /app
-COPY go.mod .   
-# build
+
+# Copy go mod files and download dependencies
+COPY go.mod go.sum ./
 RUN go mod download
-# copy source code to image
+
+# Copy the entire source code (including static files, HTML templates, etc.)
 COPY . .
 
+# Build the Go binary
 RUN go build -o main .
 
-#final stageb- Distroless images
-
+# Final image: use Distroless for minimal footprint
 FROM gcr.io/distroless/base
 
-COPY --from=base /app/main .
+# Copy the built binary
+COPY --from=builder /app/main /
 
-COPY --from=base /app/static ./static
+# If your app needs static assets or templates, copy them here
+COPY --from=builder /app/static /static
 
 EXPOSE 8080
 
-CMD [ "./main" ]
+CMD ["/main"]
