@@ -1,3 +1,4 @@
+# This is a sample deployment manifest file for a simple web application.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,10 +13,10 @@ spec:
   template:
     metadata:
       labels:
-        app: go-web-app  # This must match selector.matchLabels exactly
+        app: go-web-app
     spec:
       containers:
       - name: go-web-app
-        image: ravi6198/go-web-app:v1
+        image: abhishekf5/go-web-app:{{ .Values.image.tag }}
         ports:
         - containerPort: 8080
