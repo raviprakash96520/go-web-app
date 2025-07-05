@@ -38,6 +38,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Go 1.21
+        uses: actions/setup-go@v4
+        with:
+         go-version: '1.21'   # ✅ force Go version 1.21
+
+      - name: Verify Go version
+        run: go version   
+
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
